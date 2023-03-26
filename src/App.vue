@@ -4,12 +4,12 @@
       <article v-for="stopWatch in stopWatchesState" :key="stopWatch.id">
         <div class="stopWatchCard">
           <div class="stopWatchCard__contentWrap">
-            <h1>{{ stopWatch.timeDisplay ? stopWatch.timeDisplay : 0 }}</h1>
-            <hr>
+            <h1 :style="stopWatch.isLaunch ? 'color: #FFF' : 'color: #9E9E9E'">{{ stopWatch.timeDisplay ? stopWatch.timeDisplay : 0 }}</h1>
+            <hr :style="stopWatch.isLaunch ? 'background-color: #FFF' : 'background-color: #9E9E9E'">
             <div class="control__panel">
-              <startButton v-if="!stopWatch.isLaunch" svgFill='#fff' @click="startStopwatch(stopWatch)" />
-              <pauseButton v-if="stopWatch.isLaunch" svgFill='#fff' @click="pauseStopwatch(stopWatch)" />
-              <resetButton svgFill='#fff' @click="clearStopwatch(stopWatch)" />
+              <startButton v-if="!stopWatch.isLaunch" @click="startStopwatch(stopWatch)" />
+              <pauseButton v-if="stopWatch.isLaunch" @click="pauseStopwatch(stopWatch)" />
+              <resetButton :svgFill="stopWatch.isLaunch ? '#FFF' : '#9E9E9E'" @click="clearStopwatch(stopWatch)" />
             </div>
           </div>
         </div>
@@ -153,9 +153,20 @@ html * {
 .card__wrap {
 display: grid;
 grid-template-columns: repeat(3, 1fr);
-grid-column-gap: 50px;
+justify-items: center;
 grid-row-gap: 45px;
+}
 
+@media (max-width: 768px) {
+  .card__wrap {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 320px) {
+  .card__wrap {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card__wrap article {
@@ -181,7 +192,6 @@ hr{
   border: none;
   height: 1px;
   width: 100%;
-  background-color: var(--colorInActive)
 }
 
 
