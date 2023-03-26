@@ -7,9 +7,9 @@
             <h1>{{stopWatch.count}}</h1>
             <hr>
             <div class="control__panel">
-              <startButton v-if="!stopWatch.isLaunch" svgFill='#fff'/>
-              <pauseButton v-if="stopWatch.isLaunch" svgFill='#fff'/>  
-              <resetButton  svgFill='#fff'/>
+              <startButton v-if="!stopWatch.isLaunch" svgFill='#fff' @click="startStopwatch(stopWatch)"/>
+              <pauseButton v-if="stopWatch.isLaunch" svgFill='#fff' @click="pauseStopwatch(stopWatch)"/>  
+              <resetButton  svgFill='#fff' @click="clearStopwatch(stopWatch)"/>
             </div>
           </div>
         </div>
@@ -34,19 +34,38 @@ export default {
     return {
       stopWatchesState: [{
         id: 0,
-        count: 2323,
-        isLaunch: false
+        count: 0,
+        isLaunch: false,
+        addingTime: null
       }, {
         id: 1,
-        count: 5435,
-        isLaunch: false
+        count: 0,
+        isLaunch: false,
+        addingTime: null
       }, {
         id: 2,
-        count: 235435345323,
-        isLaunch: false
+        count: 0,
+        isLaunch: false,
+        addingTime: null
       },]
     }
-  }
+  },
+  methods:{
+    startStopwatch(stopwatch){
+      stopwatch.isLaunch = true
+      stopwatch.addingTime = setInterval(()=>{
+          stopwatch.count ++
+        },1000)
+    },
+    pauseStopwatch(stopwatch){
+      stopwatch.isLaunch = false,
+      clearInterval(stopwatch.addingTime)
+    },
+    clearStopwatch(stopwatch){
+      this.pauseStopwatch(stopwatch)
+      stopwatch.count = 0
+    },
+    }
 }
 </script>
 
