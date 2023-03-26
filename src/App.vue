@@ -133,6 +133,17 @@ html * {
   padding: 0;
 }
 
+@font-face {
+	font-family: 'Gotham Pro';
+	src: url('~@/assets/font/GothamPro.eot');
+	src: local('Gotham Pro'), local('GothamPro'),
+  url('~@/assets/font/GothamPro.eot') format('embedded-opentype'),
+  url('~@/assets/font/GothamPro.woff') format('woff'),
+  url('~@/assets/font/GothamPro.ttf') format('truetype'); 
+	font-weight: normal;
+	font-style: normal;
+   }
+
 .container {
   max-width: 775px;
   margin: 0 auto;
@@ -140,9 +151,11 @@ html * {
 }
 
 .card__wrap {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+grid-column-gap: 50px;
+grid-row-gap: 45px;
+
 }
 
 .card__wrap article {
