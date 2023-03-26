@@ -14,6 +14,16 @@
           </div>
         </div>
       </article>
+      <article @click="addStopwatch">
+        <div class="stopWatchCard">
+          <div class="stopWatchCard__contentWrap addStopWatchWrap">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8.5" width="3" height="20" fill="#9E9E9E"/>
+                <rect y="11.5" width="3" height="20" transform="rotate(-90 0 11.5)" fill="#9E9E9E"/>
+            </svg>  
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 </template>
@@ -92,6 +102,16 @@ export default {
       if (stopwatch.count <= 60) {
         return formatted[2]
       }
+    },
+    addStopwatch(){
+      const newStopwatch = {
+        id: this.stopWatchesState.length,
+        count: 0,
+        isLaunch: false,
+        addingTime: null,
+        timeDisplay: null
+      }
+      this.stopWatchesState.push(newStopwatch)
     }
   }
 }
@@ -128,16 +148,27 @@ html * {
 .card__wrap article {
   width: 225px;
   background-color: #696969;
+  position: relative;
 }
 
 .card__wrap article h1 {
-
-
   font-family: 'Gotham Pro';
   text-align: center;
   color: var(--colorInActive);
-  padding: 22px 0px 20px 0px;
-  font-size: 22px;
+  padding-top: 22px;
+  padding-bottom: 20px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+hr{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  height: 1px;
+  width: 100%;
+  background-color: var(--colorInActive)
 }
 
 
@@ -149,5 +180,12 @@ html * {
 
 .control__panel svg:last-child {
   margin-left: 48px;
+}
+
+.addStopWatchWrap{
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 </style>
