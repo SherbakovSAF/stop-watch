@@ -4,12 +4,12 @@
       <article v-for="stopWatch in stopWatchesState" :key="stopWatch.id">
         <div class="stopWatchCard">
           <div class="stopWatchCard__contentWrap">
-            <h1>{{stopWatch.count}}</h1>
+            <h1>{{ stopWatch.timeDisplay ? stopWatch.timeDisplay : 0 }}</h1>
             <hr>
             <div class="control__panel">
-              <startButton v-if="!stopWatch.isLaunch" svgFill='#fff' @click="startStopwatch(stopWatch)"/>
-              <pauseButton v-if="stopWatch.isLaunch" svgFill='#fff' @click="pauseStopwatch(stopWatch)"/>  
-              <resetButton  svgFill='#fff' @click="clearStopwatch(stopWatch)"/>
+              <startButton v-if="!stopWatch.isLaunch" svgFill='#fff' @click="startStopwatch(stopWatch)" />
+              <pauseButton v-if="stopWatch.isLaunch" svgFill='#fff' @click="pauseStopwatch(stopWatch)" />
+              <resetButton svgFill='#fff' @click="clearStopwatch(stopWatch)" />
             </div>
           </div>
         </div>
@@ -22,6 +22,7 @@
 import resetButton from './components/resetButton.vue';
 import pauseButton from './components/pauseButton.vue';
 import startButton from './components/startButton.vue';
+
 
 export default {
   name: 'App',
@@ -36,36 +37,63 @@ export default {
         id: 0,
         count: 0,
         isLaunch: false,
-        addingTime: null
+        addingTime: null,
+        timeDisplay: null
       }, {
         id: 1,
         count: 0,
         isLaunch: false,
-        addingTime: null
+        addingTime: null,
+        timeDisplay: null
       }, {
         id: 2,
         count: 0,
         isLaunch: false,
-        addingTime: null
+        addingTime: null,
+        timeDisplay: null
       },]
     }
   },
-  methods:{
-    startStopwatch(stopwatch){
+  computed: {
+
+  },
+  methods: {
+    startStopwatch(stopwatch) {
       stopwatch.isLaunch = true
-      stopwatch.addingTime = setInterval(()=>{
-          stopwatch.count ++
-        },1000)
+      stopwatch.addingTime = setInterval(() => {
+        stopwatch.count++
+        stopwatch.timeDisplay = this.formatStopwatch(stopwatch)
+      }, 1000)
     },
-    pauseStopwatch(stopwatch){
+    pauseStopwatch(stopwatch) {
       stopwatch.isLaunch = false,
-      clearInterval(stopwatch.addingTime)
+        clearInterval(stopwatch.addingTime)
     },
-    clearStopwatch(stopwatch){
+    clearStopwatch(stopwatch) {
       this.pauseStopwatch(stopwatch)
       stopwatch.count = 0
+      stopwatch.timeDisplay = null
     },
+    formatStopwatch(stopwatch) {
+      const hours = Math.floor(stopwatch.count / 60 / 60);
+      const minutes = Math.floor(stopwatch.count / 60) - (hours * 60);
+      const seconds = stopwatch.count % 60
+      const formatted = [
+        hours.toString().padStart(2, '0'),
+        minutes.toString().padStart(2, '0'),
+        seconds.toString().padStart(2, '0')
+      ];
+      if (stopwatch.count >= 3600) {
+        return formatted.join(':')
+      }
+      if (stopwatch.count >= 60) {
+        return [formatted[1], formatted[2]].join(':')
+      }
+      if (stopwatch.count <= 60) {
+        return formatted[2]
+      }
     }
+  }
 }
 </script>
 
@@ -74,7 +102,7 @@ export default {
   --colorActive: #FFF;
   --colorInActive: #9E9E9E;
 }
- 
+
 html {
   background-color: #353638;
 
@@ -97,14 +125,14 @@ html * {
   justify-content: space-between;
 }
 
-.card__wrap article{
-width: 225px;
-background-color: #696969;
+.card__wrap article {
+  width: 225px;
+  background-color: #696969;
 }
 
 .card__wrap article h1 {
 
-  
+
   font-family: 'Gotham Pro';
   text-align: center;
   color: var(--colorInActive);
@@ -113,13 +141,13 @@ background-color: #696969;
 }
 
 
-.control__panel{
+.control__panel {
   display: flex;
   justify-content: center;
   padding: 20px 0px;
 }
 
-.control__panel svg:last-child{
+.control__panel svg:last-child {
   margin-left: 48px;
 }
 </style>
