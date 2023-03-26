@@ -4,7 +4,9 @@
       <article v-for="stopWatch in stopWatchesState" :key="stopWatch.id">
         <div class="stopWatchCard">
           <div class="stopWatchCard__contentWrap">
-            <h1 :style="stopWatch.isLaunch ? 'color: #FFF' : 'color: #9E9E9E'">{{ stopWatch.timeDisplay ? stopWatch.timeDisplay : 0 }}</h1>
+            <h1 :style="stopWatch.isLaunch ? 'color: #FFF' : 'color: #9E9E9E'">
+              {{ stopWatch.timeDisplay ? stopWatch.timeDisplay : 0 }}
+            </h1>
             <hr :style="stopWatch.isLaunch ? 'background-color: #FFF' : 'background-color: #9E9E9E'">
             <div class="control__panel">
               <startButton v-if="!stopWatch.isLaunch" @click="startStopwatch(stopWatch)" />
@@ -18,9 +20,9 @@
         <div class="stopWatchCard">
           <div class="stopWatchCard__contentWrap addStopWatchWrap">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="8.5" width="3" height="20" fill="#9E9E9E"/>
-                <rect y="11.5" width="3" height="20" transform="rotate(-90 0 11.5)" fill="#9E9E9E"/>
-            </svg>  
+              <rect x="8.5" width="3" height="20" fill="#9E9E9E" />
+              <rect y="11.5" width="3" height="20" transform="rotate(-90 0 11.5)" fill="#9E9E9E" />
+            </svg>
           </div>
         </div>
       </article>
@@ -43,25 +45,7 @@ export default {
   },
   data() {
     return {
-      stopWatchesState: [{
-        id: 0,
-        count: 0,
-        isLaunch: false,
-        addingTime: null,
-        timeDisplay: null
-      }, {
-        id: 1,
-        count: 0,
-        isLaunch: false,
-        addingTime: null,
-        timeDisplay: null
-      }, {
-        id: 2,
-        count: 0,
-        isLaunch: false,
-        addingTime: null,
-        timeDisplay: null
-      },]
+      stopWatchesState: []
     }
   },
   computed: {
@@ -103,7 +87,7 @@ export default {
         return formatted[2]
       }
     },
-    addStopwatch(){
+    addStopwatch() {
       const newStopwatch = {
         id: this.stopWatchesState.length,
         count: 0,
@@ -134,15 +118,15 @@ html * {
 }
 
 @font-face {
-	font-family: 'Gotham Pro';
-	src: url('~@/assets/font/GothamPro.eot');
-	src: local('Gotham Pro'), local('GothamPro'),
-  url('~@/assets/font/GothamPro.eot') format('embedded-opentype'),
-  url('~@/assets/font/GothamPro.woff') format('woff'),
-  url('~@/assets/font/GothamPro.ttf') format('truetype'); 
-	font-weight: normal;
-	font-style: normal;
-   }
+  font-family: 'Gotham Pro';
+  src: url('~@/assets/font/GothamPro.eot');
+  src: local('Gotham Pro'), local('GothamPro'),
+    url('~@/assets/font/GothamPro.eot') format('embedded-opentype'),
+    url('~@/assets/font/GothamPro.woff') format('woff'),
+    url('~@/assets/font/GothamPro.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 .container {
   max-width: 775px;
@@ -151,23 +135,32 @@ html * {
 }
 
 .card__wrap {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-justify-items: center;
-grid-row-gap: 45px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  grid-row-gap: 45px;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 0px) {
+  .card__wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) {
   .card__wrap {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 320px) {
+@media (min-width: 1024px) {
   .card__wrap {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    ;
   }
 }
+
+
 
 .card__wrap article {
   width: 225px;
@@ -185,7 +178,7 @@ grid-row-gap: 45px;
   line-height: 1;
 }
 
-hr{
+hr {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -201,13 +194,19 @@ hr{
   padding: 20px 0px;
 }
 
+
+.control__panel *{
+cursor: pointer;
+}
+
 .control__panel svg:last-child {
   margin-left: 48px;
 }
 
-.addStopWatchWrap{
+.addStopWatchWrap {
   display: flex;
   justify-content: center;
+  cursor: pointer;
   padding-top: 50px;
   padding-bottom: 50px;
 }
