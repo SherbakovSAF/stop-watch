@@ -48,52 +48,58 @@ export default {
       stopWatchesState: []
     }
   },
-  computed: {
-
-  },
   methods: {
     startStopwatch(stopwatch) {
       stopwatch.isLaunch = true
-      stopwatch.addingTime = setInterval(() => {
-        stopwatch.count++
-        stopwatch.timeDisplay = this.formatStopwatch(stopwatch)
+      stopwatch.startTime = Date.now() - stopwatch.count
+      stopwatch.interval = setInterval(()=> {
+        stopwatch.count = (Date.now() - stopwatch.startTime)
+        stopwatch.timeDisplay = this.getTimeDisplay(stopwatch.count)
       }, 1000)
+      
     },
     pauseStopwatch(stopwatch) {
       stopwatch.isLaunch = false,
-        clearInterval(stopwatch.addingTime)
+      stopwatch.startTime = null,
+      clearInterval(stopwatch.interval)
     },
     clearStopwatch(stopwatch) {
       this.pauseStopwatch(stopwatch)
       stopwatch.count = 0
-      stopwatch.timeDisplay = null
+      stopwatch.timeDisplay = '00'
     },
-    formatStopwatch(stopwatch) {
-      const hours = Math.floor(stopwatch.count / 60 / 60);
-      const minutes = Math.floor(stopwatch.count / 60) - (hours * 60);
-      const seconds = stopwatch.count % 60
+    getTimeDisplay(pastTimeMs){ 
+      const convertMsToSec = Math.floor(pastTimeMs / 1000) 
+      const formatted = this.formatStopwatch(convertMsToSec) 
+      if (convertMsToSec >= 3600) {
+        return formatted.join(':')
+      }
+      if (convertMsToSec >= 60) {
+        return [formatted[1], formatted[2]].join(':')
+      }
+      if (convertMsToSec <= 60) {
+        return formatted[2]
+      }
+    },
+    formatStopwatch(sec) {
+      const hours = Math.floor(sec / 60 / 60);
+      const minutes = Math.floor(sec / 60) - (hours * 60);
+      const seconds = sec % 60
       const formatted = [
         hours.toString().padStart(2, '0'),
         minutes.toString().padStart(2, '0'),
         seconds.toString().padStart(2, '0')
       ];
-      if (stopwatch.count >= 3600) {
-        return formatted.join(':')
-      }
-      if (stopwatch.count >= 60) {
-        return [formatted[1], formatted[2]].join(':')
-      }
-      if (stopwatch.count <= 60) {
-        return formatted[2]
-      }
+      return formatted
     },
     addStopwatch() {
       const newStopwatch = {
         id: this.stopWatchesState.length,
-        count: 0,
         isLaunch: false,
-        addingTime: null,
-        timeDisplay: null
+        count: 0,
+        startTime: null,
+        timeDisplay: '00',
+        interval: null,
       }
       this.stopWatchesState.push(newStopwatch)
     }
